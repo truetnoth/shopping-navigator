@@ -18,9 +18,6 @@ export default function BrandCard({ brand, onClick }) {
           alt={brand.name}
           loading="lazy"
         />
-        {brand.hasOwnProduction && (
-          <span className={styles.badge}>Собственное производство</span>
-        )}
       </div>
 
       <div className={styles.body}>
@@ -35,6 +32,10 @@ export default function BrandCard({ brand, onClick }) {
 
         {brand.city && (
           <p className={styles.city}>{brand.city}</p>
+        )}
+
+        {brand.hasOwnProduction && (
+          <p className={styles.ownProduction}>Собственное производство</p>
         )}
 
         <p className={styles.description}>{brand.shortDescription}</p>

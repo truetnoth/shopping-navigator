@@ -6,7 +6,7 @@ export default function EmptyState({ isError }) {
       <div className={styles.wrapper}>
         <span className={styles.emoji}>⚠️</span>
         <p className={styles.title}>Данные временно недоступны</p>
-        <p className={styles.text}>Попробуйте обновить страницу чуть позже.</p>
+        <p className={styles.text}>Попробуйте обновить страницу чуть позже</p>
       </div>
     );
   }
@@ -15,7 +15,7 @@ export default function EmptyState({ isError }) {
     <div className={styles.wrapper}>
       <span className={styles.emoji}>🔍</span>
       <p className={styles.title}>По вашему запросу ничего не найдено</p>
-      <p className={styles.text}>Попробуйте изменить фильтры или сбросить их.</p>
+      <p className={styles.text}>Попробуйте изменить фильтры или сбросить их</p>
     </div>
   );
 }

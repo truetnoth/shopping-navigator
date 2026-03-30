@@ -98,8 +98,8 @@
   display: inline-flex;
   align-items: center;
   padding: 13px 20px;
-  background: var(--color-yellow);
-  color: var(--color-black);
+  background: var(--color-blue);
+  color: var(--color-white);
   font-size: 15px;
   font-weight: 700;
   border-radius: 10px;
@@ -145,8 +145,8 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 6px;
-  background: var(--color-yellow);
-  color: var(--color-black);
+  background: var(--color-blue);
+  color: var(--color-white);
 }
 
 .badgeGray {

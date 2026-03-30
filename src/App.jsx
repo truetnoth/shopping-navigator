@@ -7,8 +7,10 @@ import BrandDetail from './components/BrandDetail/BrandDetail';
 import ResultsCount from './components/ResultsCount/ResultsCount';
 import EmptyState from './components/EmptyState/EmptyState';
 import Skeleton from './components/Skeleton/Skeleton';
+import Pagination from './components/Pagination/Pagination';
 import { useSheetData } from './hooks/useSheetData';
 import { useFilters } from './hooks/useFilters';
+import { usePagination } from './hooks/usePagination';
 import styles from './App.module.css';
 
 function Navigator() {
@@ -24,6 +26,7 @@ function Navigator() {
   } = useFilters(brands);
 
   const [selectedBrand, setSelectedBrand] = useState(null);
+  const { page, setPage, pageItems, totalPages } = usePagination(filteredBrands);
 
   return (
     <div className={styles.page}>
@@ -55,7 +58,8 @@ function Navigator() {
             ) : (
               <>
                 <ResultsCount count={filteredBrands.length} />
-                <BrandGrid brands={filteredBrands} onCardClick={setSelectedBrand} />
+                <BrandGrid brands={pageItems} onCardClick={setSelectedBrand} />
+                <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
               </>
             )}
           </div>
