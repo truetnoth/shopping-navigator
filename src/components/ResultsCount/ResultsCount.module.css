@@ -1,0 +1,10 @@
+.count {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  margin-bottom: 20px;
+}
+
+.count strong {
+  color: var(--color-black);
+  font-weight: 600;
+}
