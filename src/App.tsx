@@ -11,6 +11,7 @@ import Pagination from './components/Pagination/Pagination';
 import { useSheetData } from './hooks/useSheetData';
 import { useFilters } from './hooks/useFilters';
 import { usePagination } from './hooks/usePagination';
+import type { Brand } from './types';
 import styles from './App.module.css';
 
 function Navigator() {
@@ -24,7 +25,7 @@ function Navigator() {
     resetFilters,
   } = useFilters(brands);
 
-  const [selectedBrand, setSelectedBrand] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState<Brand | null>(null);
   const { page, setPage, pageItems, totalPages } = usePagination(filteredBrands);
 
   return (
@@ -35,7 +36,7 @@ function Navigator() {
         <div className={styles.container}>
           <div className={styles.hero}>
             <h1 className={styles.title}>Навигатор по российским брендам</h1>
-			<p className={styles.subtitle}>Пам-пам</p> 
+            <p className={styles.subtitle}>Пам-пам</p>
           </div>
 
           <FilterPanel

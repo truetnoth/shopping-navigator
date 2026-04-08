@@ -1,14 +1,15 @@
 import { useState, useCallback, useMemo, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { filterBrands, INITIAL_FILTERS } from '../utils/filterBrands';
+import type { Brand, Filters, ArrayFilterKey } from '../types';
 
-function parseArrayParam(value) {
+function parseArrayParam(value: string | null): string[] {
   if (!value) return [];
   return value.split(',').map((s) => s.trim()).filter(Boolean);
 }
 
-function serializeFilters(filters) {
-  const params = {};
+function serializeFilters(filters: Filters): Record<string, string> {
+  const params: Record<string, string> = {};
   if (filters.categories.length > 0) params.category = filters.categories.join(',');
   if (filters.types.length > 0) params.type = filters.types.join(',');
   if (filters.priceSegments.length > 0) params.price = filters.priceSegments.join(',');
@@ -18,20 +19,27 @@ function serializeFilters(filters) {
   return params;
 }
 
-export function useFilters(brands) {
+export function useFilters(brands: Brand[]): {
+  filters: Filters;
+  filteredBrands: Brand[];
+  isActive: boolean;
+  toggleArrayFilter: (key: ArrayFilterKey, value: string) => void;
+  setSearch: (value: string) => void;
+  resetFilters: () => void;
+} {
   const [searchParams, setSearchParams] = useSearchParams();
-  const isFirstRender = useRef(true);
+  const isFirstRender = useRef<boolean>(true);
 
-  const filtersFromUrl = useMemo(() => ({
+  const filtersFromUrl = useMemo<Filters>(() => ({
     categories: parseArrayParam(searchParams.get('category')),
     types: parseArrayParam(searchParams.get('type')),
     priceSegments: parseArrayParam(searchParams.get('price')),
     styles: parseArrayParam(searchParams.get('style')),
     characteristics: parseArrayParam(searchParams.get('char')),
-    search: searchParams.get('q') || '',
+    search: searchParams.get('q') ?? '',
   }), [searchParams]);
 
-  const [filters, setFilters] = useState(filtersFromUrl);
+  const [filters, setFilters] = useState<Filters>(filtersFromUrl);
 
   // Debounce URL sync for search
   useEffect(() => {
@@ -45,7 +53,7 @@ export function useFilters(brands) {
     return () => clearTimeout(timer);
   }, [filters, setSearchParams]);
 
-  const toggleArrayFilter = useCallback((key, value) => {
+  const toggleArrayFilter = useCallback((key: ArrayFilterKey, value: string) => {
     setFilters((prev) => {
       const arr = prev[key];
       const next = arr.includes(value) ? arr.filter((v) => v !== value) : [...arr, value];
@@ -53,7 +61,7 @@ export function useFilters(brands) {
     });
   }, []);
 
-  const setSearch = useCallback((value) => {
+  const setSearch = useCallback((value: string) => {
     setFilters((prev) => ({ ...prev, search: value }));
   }, []);
 

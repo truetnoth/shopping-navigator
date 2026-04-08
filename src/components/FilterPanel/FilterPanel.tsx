@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import styles from './FilterPanel.module.css';
 import ChipGroup from './ChipGroup';
 import SearchInput from './SearchInput';
+import type { Filters, ArrayFilterKey } from '../../types';
 
 const CATEGORIES = [
   'Одежда',
@@ -27,13 +28,27 @@ const CHARACTERISTICS = [
   { value: 'Акцентное', label: 'Акцентное' },
 ];
 
-export default function FilterPanel({ filters, onToggleArray, onSearch, onReset, isActive }) {
-  const [searchValue, setSearchValue] = useState(filters.search);
-  const debounceTimer = useRef(null);
+interface FilterPanelProps {
+  filters: Filters;
+  onToggleArray: (key: ArrayFilterKey, value: string) => void;
+  onSearch: (value: string) => void;
+  onReset: () => void;
+  isActive: boolean;
+}
 
-  const handleSearch = useCallback((value) => {
+export default function FilterPanel({
+  filters,
+  onToggleArray,
+  onSearch,
+  onReset,
+  isActive,
+}: FilterPanelProps) {
+  const [searchValue, setSearchValue] = useState<string>(filters.search);
+  const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const handleSearch = useCallback((value: string) => {
     setSearchValue(value);
-    clearTimeout(debounceTimer.current);
+    if (debounceTimer.current) clearTimeout(debounceTimer.current);
     debounceTimer.current = setTimeout(() => {
       onSearch(value);
     }, 300);

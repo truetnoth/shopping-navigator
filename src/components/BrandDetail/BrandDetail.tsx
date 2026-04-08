@@ -1,16 +1,22 @@
 import { useEffect, useCallback, useState } from 'react';
+import type { Brand } from '../../types';
 import styles from './BrandDetail.module.css';
 
-const PRICE_LABELS = {
+const PRICE_LABELS: Record<string, string> = {
   '$': 'доступный',
   '$$': 'средний',
   '$$$': 'премиум',
 };
 
-export default function BrandDetail({ brand, onClose }) {
-  const [copied, setCopied] = useState(false);
+interface BrandDetailProps {
+  brand: Brand;
+  onClose: () => void;
+}
 
-  const handleKeyDown = useCallback((e) => {
+export default function BrandDetail({ brand, onClose }: BrandDetailProps) {
+  const [copied, setCopied] = useState<boolean>(false);
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') onClose();
   }, [onClose]);
 
@@ -115,7 +121,7 @@ export default function BrandDetail({ brand, onClose }) {
           )}
 
           {/* Copy link */}
-          <button className={styles.copyBtn} onClick={handleCopyLink}>
+          <button className={styles.copyBtn} onClick={() => void handleCopyLink()}>
             {copied ? '✓ Ссылка скопирована' : 'Скопировать ссылку на бренд'}
           </button>
         </div>

@@ -14,7 +14,11 @@ function SkeletonCard() {
   );
 }
 
-export default function Skeleton({ count = 6 }) {
+interface SkeletonProps {
+  count?: number;
+}
+
+export default function Skeleton({ count = 6 }: SkeletonProps) {
   return (
     <div className={styles.grid}>
       {Array.from({ length: count }).map((_, i) => (

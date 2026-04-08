@@ -1,6 +1,12 @@
+import type { Brand } from '../../types';
 import styles from './BrandCard.module.css';
 
-export default function BrandCard({ brand, onClick }) {
+interface BrandCardProps {
+  brand: Brand;
+  onClick: () => void;
+}
+
+export default function BrandCard({ brand, onClick }: BrandCardProps) {
   const categories = brand.category
     ? brand.category.split(',').map((s) => s.trim())
     : [];
@@ -9,7 +15,7 @@ export default function BrandCard({ brand, onClick }) {
     ? brand.tags.split(',').map((s) => s.trim()).filter(Boolean)
     : [];
 
-  function handleWebsiteClick(e) {
+  function handleWebsiteClick(e: React.MouseEvent) {
     e.stopPropagation();
   }
 

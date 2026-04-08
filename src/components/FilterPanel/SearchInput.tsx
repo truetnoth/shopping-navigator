@@ -1,6 +1,11 @@
 import styles from './SearchInput.module.css';
 
-export default function SearchInput({ value, onChange }) {
+interface SearchInputProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export default function SearchInput({ value, onChange }: SearchInputProps) {
   return (
     <div className={styles.wrapper}>
       <svg className={styles.icon} width="16" height="16" viewBox="0 0 16 16" fill="none">

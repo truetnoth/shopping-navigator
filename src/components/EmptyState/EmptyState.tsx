@@ -1,6 +1,10 @@
 import styles from './EmptyState.module.css';
 
-export default function EmptyState({ isError }) {
+interface EmptyStateProps {
+  isError?: boolean;
+}
+
+export default function EmptyState({ isError }: EmptyStateProps) {
   if (isError) {
     return (
       <div className={styles.wrapper}>

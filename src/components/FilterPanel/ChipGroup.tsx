@@ -1,6 +1,14 @@
 import styles from './ChipGroup.module.css';
 
-export default function ChipGroup({ label, options, selected, onToggle, labels }) {
+interface ChipGroupProps {
+  label: string;
+  options: string[];
+  selected: string[];
+  onToggle: (value: string) => void;
+  labels?: Record<string, string>;
+}
+
+export default function ChipGroup({ label, options, selected, onToggle, labels }: ChipGroupProps) {
   return (
     <div className={styles.group}>
       <span className={styles.label}>{label}</span>

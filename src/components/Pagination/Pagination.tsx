@@ -1,20 +1,26 @@
 import styles from './Pagination.module.css';
 
-export default function Pagination({ page, totalPages, onPageChange }) {
+interface PaginationProps {
+  page: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
+
+export default function Pagination({ page, totalPages, onPageChange }: PaginationProps) {
   if (totalPages <= 1) return null;
 
-  function handlePage(p) {
+  function handlePage(p: number) {
     if (p < 1 || p > totalPages) return;
     onPageChange(p);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Build page numbers with ellipsis
-  function getPages() {
+  function getPages(): (number | string)[] {
     if (totalPages <= 7) {
       return Array.from({ length: totalPages }, (_, i) => i + 1);
     }
-    const pages = [];
+    const pages: (number | string)[] = [];
     pages.push(1);
     if (page > 3) pages.push('…');
     for (let p = Math.max(2, page - 1); p <= Math.min(totalPages - 1, page + 1); p++) {
@@ -43,7 +49,7 @@ export default function Pagination({ page, totalPages, onPageChange }) {
           <button
             key={p}
             className={`${styles.pageBtn} ${p === page ? styles.active : ''}`}
-            onClick={() => handlePage(p)}
+            onClick={() => handlePage(p as number)}
             aria-current={p === page ? 'page' : undefined}
           >
             {p}

@@ -1,19 +1,26 @@
 import { useState, useEffect, useMemo } from 'react';
+import type { Brand } from '../types';
 
-function getColumns() {
+function getColumns(): number {
   const w = window.innerWidth;
   if (w > 1024) return 3;
   if (w > 768) return 2;
   return 1;
 }
 
-function getPageSize() {
+function getPageSize(): number {
   return getColumns() * 4;
 }
 
-export function usePagination(items) {
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(getPageSize);
+export function usePagination(items: Brand[]): {
+  page: number;
+  setPage: (page: number) => void;
+  pageItems: Brand[];
+  totalPages: number;
+  pageSize: number;
+} {
+  const [page, setPage] = useState<number>(1);
+  const [pageSize, setPageSize] = useState<number>(getPageSize);
 
   // Update page size on resize
   useEffect(() => {

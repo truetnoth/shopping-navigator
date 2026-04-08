@@ -1,8 +1,10 @@
+import type { Brand, Filters } from '../types';
+
 /**
  * Filters brands based on active filter criteria.
  * Category/type/priceSegment/styles/characteristics — OR within group, AND between groups.
  */
-export function filterBrands(brands, filters) {
+export function filterBrands(brands: Brand[], filters: Filters): Brand[] {
   const { categories, types, priceSegments, styles, characteristics, search } = filters;
 
   return brands.filter((brand) => {
@@ -39,7 +41,7 @@ export function filterBrands(brands, filters) {
 
     // Characteristic filter (OR within group)
     if (characteristics.length > 0) {
-      if (!characteristics.includes(brand.characteristic)) return false;
+      if (!characteristics.includes(brand.characteristic ?? '')) return false;
     }
 
     // Text search
@@ -56,7 +58,7 @@ export function filterBrands(brands, filters) {
   });
 }
 
-export const INITIAL_FILTERS = {
+export const INITIAL_FILTERS: Filters = {
   categories: [],
   types: [],
   priceSegments: [],

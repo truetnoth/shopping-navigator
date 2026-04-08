@@ -1,6 +1,12 @@
 import styles from './ToggleFilter.module.css';
 
-export default function ToggleFilter({ label, checked, onToggle }) {
+interface ToggleFilterProps {
+  label: string;
+  checked: boolean;
+  onToggle: () => void;
+}
+
+export default function ToggleFilter({ label, checked, onToggle }: ToggleFilterProps) {
   return (
     <div className={styles.wrapper}>
       <span className={styles.label}>{label}</span>
