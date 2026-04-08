@@ -79,6 +79,21 @@
   color: var(--color-text-muted);
 }
 
+.tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid #e5e5e5;
+}
+
 .description {
   font-size: 14px;
   color: var(--color-text-secondary);

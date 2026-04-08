@@ -2,9 +2,9 @@ import { useEffect, useCallback, useState } from 'react';
 import styles from './BrandDetail.module.css';
 
 const PRICE_LABELS = {
-  '$': 'до ~3 000 ₽ за вещь',
-  '$$': '3 000 – 15 000 ₽',
-  '$$$': 'от 15 000 ₽',
+  '$': 'доступный',
+  '$$': 'средний',
+  '$$$': 'премиум',
 };
 
 export default function BrandDetail({ brand, onClose }) {
@@ -35,11 +35,7 @@ export default function BrandDetail({ brand, onClose }) {
   }
 
   const categories = brand.category ? brand.category.split(',').map((s) => s.trim()) : [];
-  const types = brand.type ? brand.type.split(',').map((s) => s.trim()) : [];
-  const tags = brand.tags ? brand.tags.split(',').map((s) => s.trim()).filter(Boolean) : [];
-  const offlineStores = brand.offlineStores ? brand.offlineStores.split(',').map((s) => s.trim()).filter(Boolean) : [];
-  const tjUrls = brand.tjArticleUrl ? brand.tjArticleUrl.split(',').map((s) => s.trim()).filter(Boolean) : [];
-  const tjTitles = brand.tjArticleTitle ? brand.tjArticleTitle.split(',').map((s) => s.trim()).filter(Boolean) : [];
+  const tagList = brand.tags ? brand.tags.split(',').map((s) => s.trim()).filter(Boolean) : [];
 
   return (
     <div className={styles.overlay} onClick={onClose}>
@@ -65,9 +61,9 @@ export default function BrandDetail({ brand, onClose }) {
             {categories.map((cat) => (
               <span key={cat} className={styles.tag}>{cat}</span>
             ))}
-            {types.map((t) => (
-              <span key={t} className={`${styles.tag} ${styles.tagType}`}>{t}</span>
-            ))}
+            {brand.type && (
+              <span className={`${styles.tag} ${styles.tagType}`}>{brand.type}</span>
+            )}
           </div>
 
           {/* Title */}
@@ -96,21 +92,18 @@ export default function BrandDetail({ brand, onClose }) {
             </span>
           </div>
 
-          {/* City */}
-          {brand.city && (
+          {/* Characteristic */}
+          {brand.characteristic && (
             <div className={styles.infoRow}>
-              <span className={styles.infoLabel}>Город</span>
-              <span>{brand.city}{brand.region ? `, ${brand.region}` : ''}</span>
+              <span className={styles.infoLabel}>Характер</span>
+              <span>{brand.characteristic}</span>
             </div>
           )}
 
-          {/* Tags */}
-          {(brand.hasOwnProduction || tags.length > 0) && (
+          {/* Style tags */}
+          {tagList.length > 0 && (
             <div className={styles.badges}>
-              {brand.hasOwnProduction && (
-                <span className={styles.badgeYellow}>Собственное производство</span>
-              )}
-              {tags.filter((t) => t !== 'Собственное производство').map((tag) => (
+              {tagList.map((tag) => (
                 <span key={tag} className={styles.badgeGray}>{tag}</span>
               ))}
             </div>
@@ -119,54 +112,6 @@ export default function BrandDetail({ brand, onClose }) {
           {/* Description */}
           {brand.fullDescription && (
             <p className={styles.description}>{brand.fullDescription}</p>
-          )}
-
-          {/* Offline stores */}
-          {offlineStores.length > 0 && (
-            <div className={styles.section}>
-              <h4 className={styles.sectionTitle}>Офлайн-магазины</h4>
-              <p className={styles.sectionText}>{offlineStores.join(' · ')}</p>
-            </div>
-          )}
-
-          {/* TJ articles */}
-          {tjUrls.length > 0 && (
-            <div className={styles.section}>
-              <h4 className={styles.sectionTitle}>Бренд в Т—Ж</h4>
-              <div className={styles.articles}>
-                {tjUrls.map((url, i) => (
-                  <a
-                    key={url}
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.articleLink}
-                  >
-                    {tjTitles[i] || 'Читать статью'}
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Promo */}
-          {brand.promoText && (
-            <div className={styles.promoBlock}>
-              <span className={styles.promoIcon}>🎁</span>
-              <p className={styles.promoText}>{brand.promoText}</p>
-            </div>
-          )}
-
-          {/* Shopping Tinkoff */}
-          {brand.shoppingLink && (
-            <a
-              className={styles.shoppingBtn}
-              href={brand.shoppingLink}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Найти в Шоппинге Т-Банка
-            </a>
           )}
 
           {/* Copy link */}

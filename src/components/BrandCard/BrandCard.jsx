@@ -5,6 +5,10 @@ export default function BrandCard({ brand, onClick }) {
     ? brand.category.split(',').map((s) => s.trim())
     : [];
 
+  const tagList = brand.tags
+    ? brand.tags.split(',').map((s) => s.trim()).filter(Boolean)
+    : [];
+
   function handleWebsiteClick(e) {
     e.stopPropagation();
   }
@@ -30,15 +34,25 @@ export default function BrandCard({ brand, onClick }) {
 
         <h3 className={styles.name}>{brand.name}</h3>
 
-        {brand.city && (
-          <p className={styles.city}>{brand.city}</p>
+        {brand.type && (
+          <p className={styles.city}>{brand.type}</p>
         )}
 
-        {brand.hasOwnProduction && (
-          <p className={styles.ownProduction}>Собственное производство</p>
+        {tagList.length > 0 && (
+          <div className={styles.tags}>
+            {tagList.slice(0, 3).map((tag) => (
+              <span key={tag} className={styles.tag}>{tag}</span>
+            ))}
+          </div>
         )}
 
-        <p className={styles.description}>{brand.shortDescription}</p>
+        {brand.fullDescription && (
+          <p className={styles.description}>
+            {brand.fullDescription.length > 100
+              ? brand.fullDescription.slice(0, 100).trimEnd() + '…'
+              : brand.fullDescription}
+          </p>
+        )}
 
         {brand.websiteUrl && (
           <a

@@ -2,34 +2,17 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import styles from './FilterPanel.module.css';
 import ChipGroup from './ChipGroup';
 import SearchInput from './SearchInput';
-import ToggleFilter from './ToggleFilter';
 
-// v1: только гардероб
 const CATEGORIES = [
   'Одежда',
+  'Верхняя одежда',
   'Обувь',
   'Сумки',
   'Аксессуары',
-  'Нижнее бельё',
-  'Украшения',
-  // Закомментировано для v1:
-  // 'Очки',
-  // 'Косметика уходовая',
-  // 'Косметика декоративная',
-  // 'Парфюм',
-  // 'Косметика для волос',
-  // 'Декор для дома',
-  // 'Мебель',
-  // 'Посуда',
-  // 'Текстиль',
-  // 'Освещение',
-  // 'Товары для животных',
-  // 'Спортивные товары',
-  // 'Гаджеты',
-  // 'Товары 18+',
+  'Нижнее белье',
 ];
 
-const TYPES = ['Женское', 'Мужское', 'Для всех', 'Детское'];
+const TYPES = ['Для женщин', 'Для мужчин', 'Унисекс'];
 
 const PRICE_SEGMENTS = [
   { value: '$', label: '$ — доступный' },
@@ -37,7 +20,14 @@ const PRICE_SEGMENTS = [
   { value: '$$$', label: '$$$ — премиум' },
 ];
 
-export default function FilterPanel({ filters, onToggleArray, onToggleBoolean, onSearch, onReset, isActive }) {
+const STYLES = ['Кэжуал', 'Деловой стиль', 'Ледилайк', 'Ворквир', 'Аутдор', 'Авангард'];
+
+const CHARACTERISTICS = [
+  { value: 'Базовое', label: 'Базовое' },
+  { value: 'Акцентное', label: 'Акцентное' },
+];
+
+export default function FilterPanel({ filters, onToggleArray, onSearch, onReset, isActive }) {
   const [searchValue, setSearchValue] = useState(filters.search);
   const debounceTimer = useRef(null);
 
@@ -66,7 +56,7 @@ export default function FilterPanel({ filters, onToggleArray, onToggleBoolean, o
         />
 
         <ChipGroup
-          label="Тип"
+          label="Для кого"
           options={TYPES}
           selected={filters.types}
           onToggle={(val) => onToggleArray('types', val)}
@@ -80,10 +70,18 @@ export default function FilterPanel({ filters, onToggleArray, onToggleBoolean, o
           onToggle={(val) => onToggleArray('priceSegments', val)}
         />
 
-        <ToggleFilter
-          label="Собственное производство"
-          checked={filters.hasOwnProduction}
-          onToggle={() => onToggleBoolean('hasOwnProduction')}
+        <ChipGroup
+          label="Стиль"
+          options={STYLES}
+          selected={filters.styles}
+          onToggle={(val) => onToggleArray('styles', val)}
+        />
+
+        <ChipGroup
+          label="Характер"
+          options={CHARACTERISTICS.map((c) => c.value)}
+          selected={filters.characteristics}
+          onToggle={(val) => onToggleArray('characteristics', val)}
         />
       </div>
 

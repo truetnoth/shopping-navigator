@@ -12,7 +12,8 @@ function serializeFilters(filters) {
   if (filters.categories.length > 0) params.category = filters.categories.join(',');
   if (filters.types.length > 0) params.type = filters.types.join(',');
   if (filters.priceSegments.length > 0) params.price = filters.priceSegments.join(',');
-  if (filters.hasOwnProduction) params.own = '1';
+  if (filters.styles.length > 0) params.style = filters.styles.join(',');
+  if (filters.characteristics.length > 0) params.char = filters.characteristics.join(',');
   if (filters.search) params.q = filters.search;
   return params;
 }
@@ -25,7 +26,8 @@ export function useFilters(brands) {
     categories: parseArrayParam(searchParams.get('category')),
     types: parseArrayParam(searchParams.get('type')),
     priceSegments: parseArrayParam(searchParams.get('price')),
-    hasOwnProduction: searchParams.get('own') === '1',
+    styles: parseArrayParam(searchParams.get('style')),
+    characteristics: parseArrayParam(searchParams.get('char')),
     search: searchParams.get('q') || '',
   }), [searchParams]);
 
@@ -51,10 +53,6 @@ export function useFilters(brands) {
     });
   }, []);
 
-  const toggleBoolean = useCallback((key) => {
-    setFilters((prev) => ({ ...prev, [key]: !prev[key] }));
-  }, []);
-
   const setSearch = useCallback((value) => {
     setFilters((prev) => ({ ...prev, search: value }));
   }, []);
@@ -67,7 +65,8 @@ export function useFilters(brands) {
     filters.categories.length > 0 ||
     filters.types.length > 0 ||
     filters.priceSegments.length > 0 ||
-    filters.hasOwnProduction ||
+    filters.styles.length > 0 ||
+    filters.characteristics.length > 0 ||
     filters.search.length > 0
   ), [filters]);
 
@@ -78,7 +77,6 @@ export function useFilters(brands) {
     filteredBrands,
     isActive,
     toggleArrayFilter,
-    toggleBoolean,
     setSearch,
     resetFilters,
   };

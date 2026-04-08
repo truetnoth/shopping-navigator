@@ -20,7 +20,6 @@ function Navigator() {
     filteredBrands,
     isActive,
     toggleArrayFilter,
-    toggleBoolean,
     setSearch,
     resetFilters,
   } = useFilters(brands);
@@ -42,7 +41,6 @@ function Navigator() {
           <FilterPanel
             filters={filters}
             onToggleArray={toggleArrayFilter}
-            onToggleBoolean={toggleBoolean}
             onSearch={setSearch}
             onReset={resetFilters}
             isActive={isActive}

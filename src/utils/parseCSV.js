@@ -1,14 +1,44 @@
 import Papa from 'papaparse';
 
-const BOOLEAN_FIELDS = ['hasOwnProduction', 'isActive'];
+// Maps Russian CSV headers to internal camelCase field names
+const FIELD_MAP = {
+  'Бренд': 'name',
+  'Страна': 'country',
+  'Категория': 'category',
+  'Ценовой сегмент': 'priceSegmentRaw',
+  'Для кого': 'type',
+  'Ссылка': 'websiteUrl',
+  'Теги': 'tags',
+  'Характеристика': 'characteristic',
+  'Описание': 'fullDescription',
+};
 
-function castRow(row) {
-  const result = { ...row };
-  BOOLEAN_FIELDS.forEach((field) => {
-    if (field in result) {
-      result[field] = result[field] === 'TRUE' || result[field] === 'true' || result[field] === '1';
+const PRICE_MAP = { '1': '$', '3': '$$', '5': '$$$' };
+
+function normalizeRow(row, index) {
+  const result = {};
+
+  // Remap Russian keys to camelCase
+  for (const [ruKey, enKey] of Object.entries(FIELD_MAP)) {
+    if (ruKey in row) {
+      result[enKey] = row[ruKey];
     }
-  });
+  }
+
+  // Convert numeric price segment to symbol
+  if (result.priceSegmentRaw !== undefined) {
+    result.priceSegment = PRICE_MAP[String(result.priceSegmentRaw).trim()] || result.priceSegmentRaw;
+    delete result.priceSegmentRaw;
+  }
+
+  // Generate stable id from index if not present
+  if (!result.id) {
+    result.id = `brand_${String(index + 1).padStart(3, '0')}`;
+  }
+
+  // All rows from sheet are considered active
+  result.isActive = true;
+
   return result;
 }
 
@@ -19,7 +49,7 @@ export async function fetchAndParseCSV(url) {
       header: true,
       skipEmptyLines: true,
       complete: (results) => {
-        const brands = results.data.map(castRow);
+        const brands = results.data.map(normalizeRow);
         resolve(brands);
       },
       error: (error) => {
